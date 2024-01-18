@@ -1,8 +1,238 @@
+:root {
+  --navy1: #193b4d; 
+  --navy2: #2B4E61;
+  --navy3: #446577;
+  --mint: #e2fca4;
+  --mint-rgb: 226, 252, 164;
+  --dark-mint: #c7ee6e;
+  --white: #f4f9fd;
+  --grey: #d2d9de;
+  --red: #ff664e;
+}
+
 body {
+  min-width: 360px;
+  padding: 100px;
+  background: var(--navy1);
+  position: relative;
+}
+
+.swap {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  min-width: 360px;
-  font-family: Arial, Helvetica, sans-serif;
+  gap: 50px;
+  padding: 70px;
+  transition: transform 1.5s ease-in-out;
+}
+
+.content {
+  width: 600px;
+  height: 350px;
+}
+
+.content h1 {
+  color: var(--mint);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 70px;
+}
+
+.content h2 {
+  color: var(--mint);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 40px;
+}
+
+.content p {
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+}
+
+.card {
+  width: 500px;
+  height: 450px;
+  padding: 20px;
+  background-color: var(--navy2);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.form-section {
+  width: 450px;
+  padding: 15px 30px;
+  background-color: var(--navy3);
+  border-radius: 10px;
+}
+.form-section-info span {
+  color: var(--white);
+  opacity: 0.5;
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: medium;
+}
+
+.form-section-btn {
+  width: fit-content;
+  padding: 5px 10px;
+  background-color: var(--white);
+  border-radius: 10px;
+}
+.form-section-btn:hover {
+  background-color: var(--grey);
+}
+.form-section-btn span {
+  color: var(--navy1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: medium;
+}
+.form-section-btn img {
+  width: 30px;
+  position: relative;
+}
+
+#switch-btn img {
+  width: 50px;
+  fill: var(--white);
+}
+#switch-btn img:hover {
+  opacity: 0.6;
+}
+
+.swap-form label {
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: large;
+}
+.swap-form input {
+  width: 200px;
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: x-large;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+.swap-form input::placeholder {
+  color: var(--white);
+  opacity: 0.75;
+}
+.swap-form input.error::placeholder {
+  color: var(--red);
+}
+.swap-form ul li button {
+  display: inline-block;
+  color: var(--white);
+  opacity: 0.5;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: x-large;
+  margin: 0 20px;
+  padding: 0px 50px 10px 50px;
+  position: relative;
+}
+.swap-form ul li button::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  border-radius: 5px;
+  height: 5px;
+  transition: width 0.1s ease-out;
+}
+
+.swap-form ul li button.active::before,
+.swap-form ul li button.active:hover::before {
+  width: 100%;
+  background-color: var(--mint);
+  transition: width 0.4s ease-out;
+
+}
+.swap-form ul li button:hover::before {
+  width: 100%;
+  background-color: rgba(var(--mint-rgb),0.5);
+  transition: width 0.4s ease-out;
+}
+
+.swap-form ul li button.active,
+.swap-form ul li button.active:hover {
+  opacity: 1;
+}
+.swap-form ul li button:hover  {
+  opacity: 0.8;
+}
+
+#submit-button {
+  width: 450px;
+  color: var(--navy1);
+  background-color: var(--mint);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: medium;
+}
+#submit-button:hover {
+  background-color: var(--dark-mint);
+}
+
+.currency-selection {
+  width: 500px;
+  height: 500px;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.currency-selection span {
+  color: var(--navy1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: large;
+}
+
+.currency-selection input {
+  width: 400px;
+  color: var(--navy1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: medium;
+  background-color: transparent;
+  outline: 2px solid var(--navy1);
+}
+
+#currency-selection-list {
+  overflow-y: auto;
+}
+.currency-selection-list-item {
+  width: 450px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+.currency-selection-list-item img {
+  width: 50px;
+}
+.currency-selection-list-item span {
+  color: var(--navy1);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: large;
+}
+
+.cancel-btn {
+  width: 20px;
+}
+
+.search-icon {
+  width: 30px;
 }

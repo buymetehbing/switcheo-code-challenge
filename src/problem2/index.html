@@ -1,25 +1,109 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <title>Fancy Form</title>
-
-  <!-- You may add more stuff here -->
-  <link href="style.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Swap by Vivienne</title>
+  <link rel="icon" href="img/coins.png" type="image/png">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
 <body>
+  <div class="swap">
+    <!-- Text Content -->
+    <div class="flex flex-col justify-start gap-y-5 content">
+      <h1>Currency Swap</h1>
+      <p id="intro-para"></p>
+    </div>
 
-  <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
-  <form onsubmit="return !1">
-    <h5>Swap</h5>
-    <label for="input-amount">Amount to send</label>
-    <input id="input-amount" />
+    <!-- Form Content -->
+    <div>
+      <div class="swap-form card">
+        <form class="flex flex-col gap-y-5 items-center" id="swap-form" onsubmit="return !1">
+          <div class="text-center">
+            <ul class="flex flex-wrap -mb-px justify-center">
+              <li class="me-2">
+                <button id="details-btn" class="inline-block p-4 active">Details</button>
+              </li>
+              <li class="me-2">
+                <button id="settings-btn" class="inline-block p-4">Settings</button>
+              </li>
+            </ul>
+          </div>
 
-    <label for="output-amount">Amount to receive</label>
-    <input id="output-amount" />
+          <!-- Details -->
+          <div id="details-1" class="flex flex-row gap-x-2 items-center justify-between form-section">
+            <div class="flex flex-col form-section-info">
+              <span>You pay</span>
+              <input class="border p-x-2 rounded" id="from-currency" type="text" placeholder="0" autocomplete="off">
+            </div>
+            <button id="from-currency-btn" class="flex flex-row gap-x-2 items-center form-section-btn"
+              onclick="showOverlay()">
+              <img id="from-currency-img" src="tokens/ATOM.svg" alt="1INCH">
+              <span id="from-currency-code">ATOM</span>
+              <img src="img/chevron.svg">
+            </button>
+          </div>
+          <button id="switch-btn">
+            <img src="img/arrow.svg">
+          </button>
+          <div id="details-2" class="flex flex-row gap-x-2 items-center justify-between form-section">
+            <div class="flex flex-col form-section-info">
+              <span>You receive</span>
+              <input class="border p-x-2 rounded" id="to-currency" type="text" placeholder="0" autocomplete="off"
+                disabled>
+            </div>
+            <button id="to-currency-btn" class="flex flex-row gap-x-2 items-center form-section-btn"
+              onclick="showOverlay()">
+              <img id="to-currency-img" src="tokens/1INCH.svg" alt="1INCH">
+              <span id="to-currency-code">ETH</span>
+              <img src="img/chevron.svg">
+            </button>
+          </div>
+          <button id="submit-button" class="p-2 rounded" type="submit">Proceed</button>
 
-    <button>CONFIRM SWAP</button>
-  </form>
+          <!-- Settings -->
+          <div id="settings-1" class="flex flex-row gap-x-2 items-center justify-between form-section hidden">
+            <div class="flex flex-col form-section-info">
+              <span>Max. slippage (%)</span>
+              <input class="border p-x-2 rounded" id="max-slippage" type="text" placeholder="Auto"
+                oninput="validateNumberInput(this,2,5)" autocomplete="off">
+            </div>
+          </div>
+          <div id="settings-2" class="flex flex-row gap-x-2 items-center justify-between form-section hidden">
+            <div class="flex flex-col form-section-info">
+              <span>Transaction deadline (min)</span>
+              <input class="border p-x-2 rounded" id="trans-deadline" type="text" placeholder="10"
+                oninput="validateNumberInput(this,3,0)" autocomplete="off">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Currency Selection Overlay -->
+  <div id="currency-selection-overlay"
+    class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="currency-selection flex flex-col justify-start gap-y-5">
+      <div class="flex flex-row items-center justify-between">
+        <span>Select currency</span>
+        <button onclick="hideOverlay()">
+          <img class="cancel-btn" src="img/cancel.svg">
+        </button>
+      </div>
+      <div class="flex flex-row gap-x-3 items-center">
+        <img class="search-icon" src="img/search.svg">
+        <input class="p-2 rounded" type="text" id="currency-search-input" placeholder="Search..." />
+      </div>
+      <div id="currency-selection-list">
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 
