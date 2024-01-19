@@ -6,6 +6,7 @@ const toCurrencyImg = document.getElementById('to-currency-img');
 const toCurrencyCode = document.getElementById('to-currency-code');
 const fromCurrencyInput = document.getElementById('from-currency');
 const toCurrencyInput = document.getElementById('to-currency');
+const searchInput = document.getElementById('currency-search-input');
 let type = "from";
 
 function typeText(element, text, index) {
@@ -42,11 +43,14 @@ function validateNumberInput(input, pre, post) {
 function showOverlay() {
     const overlay = document.getElementById('currency-selection-overlay');
     overlay.classList.remove('hidden');
+    searchInput.focus();
+    listContainer.scrollTop = 0;
 }
 
 function hideOverlay() {
     const overlay = document.getElementById('currency-selection-overlay');
     overlay.classList.add('hidden');
+    searchInput.value = '';
 }
 
 function updateList(searchTerm, type) {
@@ -59,36 +63,60 @@ function updateList(searchTerm, type) {
         .forEach(item => {
             const listItem = document.createElement('button');
             listItem.classList.add('currency-selection-list-item');
-
+    
             const icon = document.createElement('img');
             icon.classList.add('icon');
             icon.src = `tokens/${item.currency}.svg`;
             icon.alt = item.currency;
-
+    
+            const contentContainer = document.createElement('div');
+            contentContainer.classList.add('currency-selection-list-container');
+    
             const name = document.createElement('span');
             name.textContent = item.currency;
-
+    
+            const additionalText = document.createElement('div');
+            additionalText.classList.add('currency-selection-rate');
+            additionalText.textContent = `1 ${item.currency} ≈ ${item.price.toFixed(5)} USD`;
+    
             listItem.addEventListener('click', function () {
                 currencyImg.src = `tokens/${item.currency}.svg`;
                 currencyImg.alt = item.currency;
                 currencyCode.textContent = item.currency;
+                searchInput.value = '';
                 hideOverlay();
                 calcCurrency();
+                updateRate();
             });
-
+    
+            contentContainer.appendChild(name);
+            contentContainer.appendChild(additionalText);
+    
             listItem.appendChild(icon);
-            listItem.appendChild(name);
+            listItem.appendChild(contentContainer);
             listContainer.appendChild(listItem);
         });
 }
 
-function calcCurrency() {
+function getRate() {
     let fromRate = priceData.find(item => item.currency === fromCurrencyCode.textContent)?.price;
     let toRate = priceData.find(item => item.currency === toCurrencyCode.textContent)?.price;
+    return [fromRate,toRate];
+}
 
+function updateRate() {
+    [fromRate, toRate] = getRate();
+    document.getElementById('from-rate').textContent = `1 ${fromCurrencyCode.textContent} ≈ ${(fromRate/toRate).toFixed(5)} ${toCurrencyCode.textContent}`;
+    document.getElementById('to-rate').textContent = `1 ${toCurrencyCode.textContent} ≈ ${(toRate/fromRate).toFixed(5)} ${fromCurrencyCode.textContent}`;
+}
+
+function calcCurrency() {
+    [fromRate, toRate] = getRate();
     if (fromCurrencyInput.value !== '') {
         let amt = parseFloat(fromCurrencyInput.value) * fromRate;
         toCurrencyInput.value = (amt / toRate).toFixed(5);
+        document.getElementById('estimate').classList.remove('hidden');
+        document.getElementById('estimate').textContent = `≈ ${amt > 99999999 ? Number(amt).toExponential(5) : amt.toFixed(5)} USD`;
     } else {
         clearCurrency();
     }
@@ -97,6 +125,8 @@ function calcCurrency() {
 function clearCurrency() {
     toCurrencyInput.value = '';
     fromCurrencyInput.value = '';
+    document.getElementById('estimate').classList.add('hidden');
+    document.getElementById('estimate').textContent = '';
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -105,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var buyBtn = document.getElementById('details-btn');
     var sellBtn = document.getElementById('settings-btn');
-    var searchInput = document.getElementById('currency-search-input');
     var fromCurrencyBtn = document.getElementById('from-currency-btn');
     var toCurrencyBtn = document.getElementById('to-currency-btn');
     var switchBtn = document.getElementById('switch-btn');
@@ -140,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
        [ fromCurrencyImg.alt, toCurrencyImg.alt] = [toCurrencyImg.alt, fromCurrencyImg.alt];
        [ fromCurrencyCode.textContent, toCurrencyCode.textContent] = [toCurrencyCode.textContent, fromCurrencyCode.textContent];
        clearCurrency();
+       updateRate();
     })
 
     fromCurrencyBtn.addEventListener('click', function () {
@@ -153,11 +183,14 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     submitBtn.addEventListener('click', function () {
-        if (fromCurrencyInput.value == '' || toCurrencyInput.value == '') {
+        if (fromCurrencyInput.value == '' || toCurrencyInput.value == '' || fromCurrencyCode.textContent == toCurrencyCode.textContent) {
             document.querySelector('.swap-form input').classList.add('error');
-            // document.querySelector('.swap-form input').style.setProperty('--placeholder-color', 'red');
         } else {
             document.querySelector('.swap').style.transform = 'translateY(-150%)';
+            setTimeout(() => {
+                document.querySelector('.swap').classList.add('hidden');
+                document.getElementById('congrats').classList.remove('hidden');
+            }, 1000);
         }
     })
 
@@ -167,13 +200,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     fromCurrencyInput.addEventListener('input', function () {
         validateNumberInput(this,20,5)
-        calcCurrency()
+        calcCurrency();
     });
 
     priceData.sort((a, b) => a.currency.localeCompare(b.currency));
+    updateRate();
 });
-
-
 
 const priceData = [
     {"currency":"BLUR","date":"2023-08-29T07:10:40.000Z","price":0.20811525423728813},
