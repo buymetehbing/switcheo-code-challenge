@@ -24,7 +24,7 @@
       <div class="swap-form card">
         <form class="flex flex-col gap-y-5 items-center" id="swap-form" onsubmit="return !1">
           <div class="text-center">
-            <ul class="flex flex-wrap -mb-px justify-center">
+            <ul class="flex flex-wrap gap-x-2 -mb-px justify-center">
               <li class="me-2">
                 <button id="details-btn" class="inline-block p-4 active">Details</button>
               </li>
@@ -46,7 +46,7 @@
               onclick="showOverlay()">
               <img id="from-currency-img" src="tokens/ATOM.svg" alt="1INCH">
               <span id="from-currency-code">ATOM</span>
-              <img src="img/chevron.svg">
+              <img class="chevron" src="img/chevron.svg">
             </button>
           </div>
           <button id="switch-btn">
@@ -63,7 +63,7 @@
               onclick="showOverlay()">
               <img id="to-currency-img" src="tokens/1INCH.svg" alt="1INCH">
               <span id="to-currency-code">ETH</span>
-              <img src="img/chevron.svg">
+              <img class="chevron" src="img/chevron.svg">
             </button>
           </div>
           <button id="submit-button" class="p-2 rounded" type="submit">Swap</button>
@@ -75,6 +75,7 @@
               <input class="border p-x-2 rounded" id="max-slippage" type="text" placeholder="Auto"
                 oninput="validateNumberInput(this,2,5)" autocomplete="off">
             </div>
+            <span></span>
           </div>
           <div id="settings-2" class="flex flex-row gap-x-2 items-center justify-between form-section hidden">
             <div class="flex flex-col form-section-info">
