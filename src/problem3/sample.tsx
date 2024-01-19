@@ -31,8 +31,8 @@ interface Props extends BoxProps {                      // missing interface - B
 }                                                       
 
 const WalletPage: React.FC<Props> = (props: Props) => {
-    const { children, ...rest } = props;                // unknown and unused variable
-    const balances = useWalletBalances();               // missing function - useWalletBalances(),, possible to use hooks + Datasource
+    const { children, ...rest } = props;                // unknown children variable,, define in Props or BoxProps
+    const balances = useWalletBalances();               // missing function - useWalletBalances(),, possible to use hooks + Datasource maybe
     const [prices, setPrices] = useState({});
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const WalletPage: React.FC<Props> = (props: Props) => {
         datasource.getPrices().then(prices => {
             setPrices(prices);
         }).catch(error => {
-            console.err(error);                         // syntax error
+            console.err(error);                         // syntax error,, console.error not console.err
         });
     }, []);
 
@@ -64,20 +64,20 @@ const WalletPage: React.FC<Props> = (props: Props) => {
     const sortedBalances = useMemo(() => {
         return balances.filter((balance: WalletBalance) => {
             const balancePriority = getPriority(balance.blockchain);
-            if (lhsPriority > -99) {                    // wrong variable - lhsPriority used instead of balancePriority
-                if (balance.amount <= 0) {              // if statements can be simplified
-                    return true;                        // wrong logic - showing -ve balances
+            if (lhsPriority > -99) {                    // wrong variable,, to use balancePriority instead of lhsPriority
+                if (balance.amount <= 0) {              // if statements can be simplified,, use &&
+                    return true;                        // wrong logic as it is showing -ve balances,, return false here
                 }
             }
             return false
         }).sort((lhs: WalletBalance, rhs: WalletBalance) => {
             const leftPriority = getPriority(lhs.blockchain);
             const rightPriority = getPriority(rhs.blockchain);
-            if (leftPriority > rightPriority) {         // no default return for same priority
+            if (leftPriority > rightPriority) {         
                 return -1;
             } else if (rightPriority > leftPriority) {
                 return 1;
-            }
+            }                                           // no default return for same priority,, return 0 otherwise
         });
     }, [balances, prices]);
 
@@ -88,7 +88,7 @@ const WalletPage: React.FC<Props> = (props: Props) => {
         }
     })
 
-    const rows = sortedBalances.map(                        // wrong variable - sortedBalances used instead of formattedBalances
+    const rows = sortedBalances.map(                        // wrong variable,, use formattedBalances instead of sortedBalances
         (balance: FormattedWalletBalance, index: number) => {     
             const usdValue = prices[balance.currency] * balance.amount;
             return (
