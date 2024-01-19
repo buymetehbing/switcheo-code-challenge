@@ -9,7 +9,8 @@ Hi there, I'm Vivienne Ching, a penultimate year undergrad studying computer sci
 ## Tasks
 
 All codes can be found in their respective folders in `src/`. <br>
-To view the website for task 2, simply [click here](https://buymetehbing.github.io/switcheo-code-challenge/).
+To view the website for task 2, simply [click here](https://buymetehbing.github.io/switcheo-code-challenge/). <br>
+As for task 3, I've stated the issues in `sample.tsx` and provided my refactored version in `solution.tsx`.
 
 ## Screenshot
 
