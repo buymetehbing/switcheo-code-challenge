@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebrate Your First Transaction!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #transactionMessage {
+            position: relative;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #streamers {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .streamer {
+            position: absolute;
+            background-color: #f00;
+            width: 3px;
+            height: 15px;
+            animation: streamerFall linear infinite;
+        }
+
+        @keyframes streamerFall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="transactionMessage" class="hidden">
+        <h2>Hooray!</h2>
+        <p>Congratulations! You've just made your first-ever transaction. 🎉</p>
+        <p>Thank you for choosing our platform. We're thrilled to have you on board!</p>
+    </div>
+
+    <div id="streamers"></div>
+
+    <button onclick="celebrateTransaction()">Make Your First Transaction</button>
+
+    <script>
+        function celebrateTransaction() {
+            const transactionMessage = document.getElementById('transactionMessage');
+            const streamersContainer = document.getElementById('streamers');
+
+            // Wait for 2.5 seconds before revealing the message and starting streamers
+            setTimeout(() => {
+                // Remove the 'hidden' class to display the message
+                transactionMessage.classList.remove('hidden');
+
+                // Trigger reflow to apply the transition when changing the opacity
+                transactionMessage.offsetHeight;
+
+                // Gradually make the message visible
+                transactionMessage.style.opacity = '1';
+
+                // Start streamers
+                createStreamers();
+            }, 2500); // 2500 milliseconds = 2.5 seconds
+
+            // Function to create streamers
+            function createStreamers() {
+                for (let i = 0; i < 30; i++) {
+                    const streamer = document.createElement('div');
+                    streamer.className = 'streamer';
+                    streamer.style.left = Math.random() * 100 + 'vw';
+                    streamer.style.animationDuration = Math.random() * 2 + 1 + 's';
+                    streamersContainer.appendChild(streamer);
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

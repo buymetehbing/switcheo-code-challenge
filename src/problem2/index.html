@@ -39,6 +39,8 @@
             <div class="flex flex-col form-section-info">
               <span>You pay</span>
               <input class="border p-x-2 rounded" id="from-currency" type="text" placeholder="0" autocomplete="off">
+              <span id="estimate" class="hidden"></span>
+              <span id="from-rate"></span>
             </div>
             <button id="from-currency-btn" class="flex flex-row gap-x-2 items-center form-section-btn"
               onclick="showOverlay()">
@@ -55,6 +57,7 @@
               <span>You receive</span>
               <input class="border p-x-2 rounded" id="to-currency" type="text" placeholder="0" autocomplete="off"
                 disabled>
+              <span id="to-rate"></span>
             </div>
             <button id="to-currency-btn" class="flex flex-row gap-x-2 items-center form-section-btn"
               onclick="showOverlay()">
@@ -63,7 +66,7 @@
               <img src="img/chevron.svg">
             </button>
           </div>
-          <button id="submit-button" class="p-2 rounded" type="submit">Proceed</button>
+          <button id="submit-button" class="p-2 rounded" type="submit">Swap</button>
 
           <!-- Settings -->
           <div id="settings-1" class="flex flex-row gap-x-2 items-center justify-between form-section hidden">
@@ -101,6 +104,17 @@
       </div>
       <div id="currency-selection-list">
       </div>
+    </div>
+  </div>
+  <div id="congrats" 
+  class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-10 flex items-center justify-center z-50 hidden">
+    <div class="congrats-card flex flex-col justify-start gap-y-5">
+      <h2>
+        Swap-tastic news! 🎉
+      </h2>
+      <p>You've just unlocked the achievement of making your first-ever currency swap. High
+        fives all around! </p>
+      <p>Thanks a bunch for choosing our platform. We're thrilled to have you on board!</p>
     </div>
   </div>
 
