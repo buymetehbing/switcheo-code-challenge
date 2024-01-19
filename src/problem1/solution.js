@@ -21,12 +21,10 @@ var sum_to_n_b = function(n) {
     return sum;
 };
 
-// Third Approach: Using while loop
+// Third Approach: Using recursion
 var sum_to_n_c = function(n) {
-    let sum = 0, i = 1;
-    while(i <= n) {
-        sum += i;
-        i++;
+    if (n <= 0) {
+        return 0;
     }
-    return sum;
+    return n + sum_to_n_c(n-1);
 };
