@@ -1,24 +1,18 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 
-const walletApi = "";
+const walletApi = "";       // Define walletApi
 const priceApi = "https://interview.switcheo.com/prices.json";
-
-const useStyles = makeStyles((theme) => ({
-    row: {
-        // Define row styles 
-    },
-}));
+const classes = {
+    row: "",
+};
 
 interface WalletBalance {
+    blockchain: string;
     currency: string;
     amount: number;
-    blockchain: string;
 }
 
-interface FormattedWalletBalance {
-    currency: string;
-    amount: number;
+interface FormattedWalletBalance extends WalletBalance {
     formatted: string;
 }
 
@@ -49,7 +43,7 @@ class Datasource {
         try {
             const res = await fetch(this.url);
             const data = await res.json();
-            const prices = data.reduce((acc, item) => {
+            const prices = data.reduce((acc: { [currency: string]: number }, item: { currency: string, date: string, price: number }) => {
                 acc[item.currency] = item.price;
                 return acc;
             }, {});
@@ -64,10 +58,15 @@ class Datasource {
         try {
             const res = await fetch(this.url);
             const data = await res.json();
-            const balances = data.reduce((acc, item) => {
-                acc[item.wallet] = item.balance;
+            const balances = data.reduce((acc: WalletBalance[], item: { blockchain: string, currency: string, amount: number }) => {
+                const walletBalance: WalletBalance = {
+                    blockchain: item.blockchain,
+                    currency: item.currency,
+                    amount: item.amount,
+                  };
+                acc.push(walletBalance);
                 return acc;
-            }, {});
+            }, []);
             return balances;
         } catch (error) {
             console.error("Error fetching balances:", error);
@@ -88,8 +87,8 @@ const WalletRow: React.FC<WalletRowProps> = ({ className, key, amount, usdValue,
 
 const WalletPage: React.FC<Props> = (props: Props) => {
     const { children, ...rest } = props;
-    const [balances, setBalances] = useState([]);
-    const [prices, setPrices] = useState({});
+    const [balances, setBalances] = useState<WalletBalance[]>([]);
+    const [prices, setPrices] = useState<{[currency: string]: number}>({});
 
     useEffect(() => {
         const datasource = new Datasource(walletApi);
@@ -131,8 +130,8 @@ const WalletPage: React.FC<Props> = (props: Props) => {
             const balancePriority = getPriority(balance.blockchain);
             if (balancePriority > -99 && balance.amount > 0) {
                 return true;
-              }
-            return true;
+            }
+            return false;
         }).sort((lhs: WalletBalance, rhs: WalletBalance) => {
             const leftPriority = getPriority(lhs.blockchain);
             const rightPriority = getPriority(rhs.blockchain);
@@ -147,23 +146,21 @@ const WalletPage: React.FC<Props> = (props: Props) => {
 
     const formattedBalances = sortedBalances.map((balance: WalletBalance) => {
         return {
-        ...balance,
-        formatted: balance.amount.toFixed()
+            ...balance,
+            formatted: balance.amount.toFixed()
         }
     })
-
-    const classes = useStyles();
 
     const rows = formattedBalances.map((balance: FormattedWalletBalance, index: number) => {
         const usdValue = prices[balance.currency] * balance.amount;
         return (
-        <WalletRow 
-            className={classes.row}
-            key={index}
-            amount={balance.amount}
-            usdValue={usdValue}
-            formattedAmount={balance.formatted}
-        />
+            <WalletRow 
+                className={classes.row}
+                key={index}
+                amount={balance.amount}
+                usdValue={usdValue}
+                formattedAmount={balance.formatted}
+            />
         )
     })
 
