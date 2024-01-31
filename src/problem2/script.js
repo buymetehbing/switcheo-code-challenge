@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     submitBtn.addEventListener('click', function () {
         if (fromCurrencyInput.value == '' || toCurrencyInput.value == '' 
-            || fromCurrencyCode.textContent == toCurrencyCode.textContent || "/^0$/".test(fromCurrencyInput)) {
+            || fromCurrencyCode.textContent == toCurrencyCode.textContent) {
             document.querySelector('.swap-form input').classList.add('error');
         } else {
             document.querySelector('.swap').style.transform = 'translateY(-150%)';
